@@ -39,8 +39,8 @@ void			queue_destroy(struct queue *th)
 {
   if (th != NULL)
     {
-      th->len = 0;
       th->clear(th);
+      th->len = 0;
       th->head = NULL;
     }
 }
@@ -74,10 +74,7 @@ static void *		dequeue(struct queue *th)
   void			*data = NULL;
 
   if (th != NULL && th->head != NULL)
-    {      
-      data = delete_node(th);
-      th->len--;
-    }
+    data = delete_node(th);
   return (data);
 }
 
@@ -158,6 +155,7 @@ static void *		delete_node(struct queue *th)
       data = tmp->data;
       th->head = tmp->next;
       free(tmp);
+      th->len--;
     }
   return (data);
 }
