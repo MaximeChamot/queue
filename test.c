@@ -19,24 +19,24 @@ int		main()
   for (i = 0; i < 7; ++i)
     queue->enqueue(queue, &tab[i]);
   queue->view(queue, &show);
-  printf("size: %d\n", queue->size(queue));
+  printf("size: 7:%d\n", queue->size(queue));
 
   printf("----------\n");
   queue->dequeue(queue);
   queue->view(queue, &show);
-  printf("size: %d\n", queue->size(queue));
-
-  printf("----------\n");
-  queue->dequeue(queue);
-  queue->dequeue(queue);
-  queue->dequeue(queue);
-  queue->view(queue, &show);
-  printf("size: %d\n", queue->size(queue));
+  printf("size: 6:%d\n", queue->size(queue));
 
   printf("----------\n");
   queue->dequeue(queue);
   queue->dequeue(queue);
   queue->dequeue(queue);
+  queue->view(queue, &show);
+  printf("size: 3:%d\n", queue->size(queue));
+
+  printf("----------\n");
+  queue->dequeue(queue);
+  queue->dequeue(queue);
+  queue->dequeue(queue);
   queue->dequeue(queue);
   queue->dequeue(queue);
   queue->dequeue(queue);
@@ -44,7 +44,19 @@ int		main()
   queue->dequeue(queue);
   queue->dequeue(queue);
   queue->view(queue, &show);
-  printf("size: %d\n", queue->size(queue));
+  printf("size: 0:%d\n", queue->size(queue));
+
+  printf("----------\n");
+  for (i = 0; i < 7; ++i)
+    queue->enqueue(queue, &tab[i]);
+  queue->view(queue, &show);
+  printf("size: 7:%d\n", queue->size(queue));
+
+  printf("----------\n");
+  queue_destroy(queue);
+  queue->view(queue, &show);
+  printf("size: 0:%d\n", queue->size(queue));
+
 
   queue_destroy(queue);
   free(queue);
