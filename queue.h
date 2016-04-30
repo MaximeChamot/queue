@@ -13,7 +13,7 @@ typedef struct          queue
   unsigned int          len;
   struct node           *head;
 
-  // Public methods
+  // Methods
   void			(*enqueue)(struct queue *th, void *data);
   void *		(*dequeue)(struct queue *th);
   void			(*clear)(struct queue *th);

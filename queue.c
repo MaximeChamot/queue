@@ -1,7 +1,7 @@
 #include <stdlib.h>
 #include "queue.h"
 
-// Public methods
+// Public methods declaration
 static void		enqueue(struct queue *th, void *data);
 static void *		dequeue(struct queue *th);
 static void		clear(struct queue *th);
@@ -9,7 +9,7 @@ static unsigned int	size(struct queue *th);
 static unsigned int	is_empty(struct queue *th);
 static void		view(struct queue *th, void (*display)(void *data));
 
-// Private functions
+// Private functions declaration
 static void             init_method_ptr(struct queue *th);
 static struct node *	get_last_node(struct node *head);
 static void *		delete_node(struct queue *th);
@@ -71,11 +71,9 @@ static void		enqueue(struct queue *th, void *data)
 
 static void *		dequeue(struct queue *th)
 {
-  void			*data = NULL;
-
   if (th != NULL && th->head != NULL)
-    data = delete_node(th);
-  return (data);
+    return (delete_node(th));
+  return (NULL);
 }
 
 static void		clear(struct queue *th)

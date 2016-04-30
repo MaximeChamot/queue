@@ -57,7 +57,6 @@ int		main()
   queue->view(queue, &show);
   printf("size: 0:%d\n", queue->size(queue));
 
-
   queue_destroy(queue);
   free(queue);
   return (0);
