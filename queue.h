@@ -22,6 +22,7 @@ typedef struct          queue
   unsigned int		(*size)(struct queue *th);
   unsigned int		(*empty)(struct queue *th);
   void *		(*front)(struct queue *th);
+  void *		(*swap)(struct queue *th, struct queue *to_swap);
   void			(*view)(struct queue *th, void (*display)(void *data));
 }			queue;
 
