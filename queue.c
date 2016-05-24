@@ -2,17 +2,17 @@
 #include "queue.h"
 
 // Public methods declaration
-static void		enqueue(struct queue *th, void *data);
-static void *		dequeue(struct queue *th);
+static void		push(struct queue *th, void *data);
+static void		pop(struct queue *th);
 static void		clear(struct queue *th);
 static unsigned int	size(struct queue *th);
-static unsigned int	is_empty(struct queue *th);
+static unsigned int	empty(struct queue *th);
+static void *		front(struct queue *th);
 static void		view(struct queue *th, void (*display)(void *data));
 
 // Private functions declaration
 static void             init_method_ptr(struct queue *th);
-static struct node *	get_last_node(struct node *head);
-static void *		delete_node(struct queue *th);
+static void		delete_node(struct queue *th);
 
 // Constructor
 struct queue *		new_queue(void)
@@ -30,6 +30,7 @@ void			queue_init(struct queue *th)
     {
       th->len = 0;
       th->head = NULL;
+      th->end = NULL;
       init_method_ptr(th);
     }
 }
@@ -42,38 +43,34 @@ void			queue_destroy(struct queue *th)
       th->clear(th);
       th->len = 0;
       th->head = NULL;
+      th->end = NULL;
     }
 }
 
 // Public methods
-static void		enqueue(struct queue *th, void *data)
+static void		push(struct queue *th, void *data)
 {
-  struct node		*new_node = NULL;
-  struct node		*last_node = NULL;
+  struct node		*new_node;
 
-  if (th != NULL)
+  if (th != NULL && (new_node = (struct node *)malloc(sizeof(struct node))) != NULL)
     {
-      if ((new_node = (struct node *)malloc(sizeof(struct node))) != NULL)
+      new_node->data = data;
+      new_node->next = NULL;
+      new_node->prev = NULL;
+      if (th->head != NULL)
 	{
-	  new_node->data = data;
-	  new_node->next = NULL;
-	  if (th->head != NULL)
-	    {
-	      last_node = get_last_node(th->head);
-	      last_node->next = new_node;
-	    }
-	  else
-	    th->head = new_node;
-	  th->len++;
+	  new_node->next = th->head;
+	  th->head->prev = new_node;
 	}
+      th->head = new_node;
+      th->len++;
     }
 }
 
-static void *		dequeue(struct queue *th)
+static void		pop(struct queue *th)
 {
   if (th != NULL && th->head != NULL)
-    return (delete_node(th));
-  return (NULL);
+    delete_node(th);
 }
 
 static void		clear(struct queue *th)
@@ -92,16 +89,23 @@ static unsigned int	size(struct queue *th)
   return (0);
 }
 
-static unsigned int	is_empty(struct queue *th)
+static unsigned int	empty(struct queue *th)
 {
   if (th != NULL && th->head != NULL && th->len > 0)
     return (0);
   return (1);
 }
 
+static void *		front(struct queue *th)
+{
+  if (th != NULL && th->head != NULL)
+    return (th->head->data);
+  return (NULL);
+}
+
 static void		view(struct queue *th, void (*display)(void *data))
 {
-  struct node		*node = NULL;
+  struct node		*node;
 
   if (th != NULL && display != NULL)
     {
@@ -119,41 +123,25 @@ static void             init_method_ptr(struct queue *th)
 {
   if (th != NULL)
     {
-      th->enqueue = &enqueue;
-      th->dequeue = &dequeue;
+      th->push = &push;
+      th->pop = &pop;
       th->clear = &clear;
       th->size = &size;
-      th->is_empty = &is_empty;
+      th->empty = &empty;
+      th->front = &front;
       th->view = &view;
     }
 }
 
-static struct node *	get_last_node(struct node *head)
+static void		delete_node(struct queue *th)
 {
-  struct node		*node = NULL;
+  struct node		*tmp;
 
-  if (head != NULL)
-    {
-      node = head;
-      while (node->next != NULL)
-	node = node->next;
-      return (node);
-    }
-  return (NULL);
-}
-
-static void *		delete_node(struct queue *th)
-{
-  struct node		*tmp = NULL;
-  void			*data = NULL;
-
-  if (th != NULL)
+  if (th != NULL && th->head != NULL)
     {
       tmp = th->head;
-      data = tmp->data;
-      th->head = tmp->next;
+      th->head = th->head->next;
       free(tmp);
       th->len--;
     }
-  return (data);
 }

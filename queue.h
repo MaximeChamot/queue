@@ -5,6 +5,7 @@ typedef struct		node
 {
   void			*data;
   struct node		*next;
+  struct node		*prev;
 }			node;
 
 typedef struct          queue
@@ -12,13 +13,15 @@ typedef struct          queue
   // Properties
   unsigned int          len;
   struct node           *head;
+  struct node		*end;
 
   // Methods
-  void			(*enqueue)(struct queue *th, void *data);
-  void *		(*dequeue)(struct queue *th);
+  void			(*push)(struct queue *th, void *data);
+  void			(*pop)(struct queue *th);
   void			(*clear)(struct queue *th);
   unsigned int		(*size)(struct queue *th);
-  unsigned int		(*is_empty)(struct queue *th);
+  unsigned int		(*empty)(struct queue *th);
+  void *		(*front)(struct queue *th);
   void			(*view)(struct queue *th, void (*display)(void *data));
 }			queue;
 
